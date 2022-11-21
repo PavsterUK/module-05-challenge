@@ -1,94 +1,11 @@
-// Array of special characters to be included in password
-var specialCharacters = [
-  "@",
-  "%",
-  "+",
-  "\\",
-  "/",
-  "'",
-  "!",
-  "#",
-  "$",
-  "^",
-  "?",
-  ":",
-  ",",
-  ")",
-  "(",
-  "}",
-  "{",
-  "]",
-  "[",
-  "~",
-  "-",
-  "_",
-  ".",
-];
+import {
+  specialCharacters,
+  numericCharacters,
+  lowerCasedCharacters,
+  upperCasedCharacters,
+} from "./data.js";
 
-// Array of numeric characters to be included in password
-var numericCharacters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
-// Array of lowercase characters to be included in password
-var lowerCasedCharacters = [
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f",
-  "g",
-  "h",
-  "i",
-  "j",
-  "k",
-  "l",
-  "m",
-  "n",
-  "o",
-  "p",
-  "q",
-  "r",
-  "s",
-  "t",
-  "u",
-  "v",
-  "w",
-  "x",
-  "y",
-  "z",
-];
-
-// Array of uppercase characters to be included in password
-var upperCasedCharacters = [
-  "A",
-  "B",
-  "C",
-  "D",
-  "E",
-  "F",
-  "G",
-  "H",
-  "I",
-  "J",
-  "K",
-  "L",
-  "M",
-  "N",
-  "O",
-  "P",
-  "Q",
-  "R",
-  "S",
-  "T",
-  "U",
-  "V",
-  "W",
-  "X",
-  "Y",
-  "Z",
-];
-
-let passLength = 0;
+let passLength = 0; 
 let includeLowerCase = false;
 let includeUpperCase = false;
 let includeNumeric = false;
@@ -97,10 +14,25 @@ let includeSpecialChar = false;
 // Function to prompt user for password options.
 function getPasswordOptions() {
   passLength = getPasswordLength();
-  includeLowerCase = getCharTypePrompt("lowercase");
-  includeUpperCase = getCharTypePrompt("uppercase");
-  includeNumeric = getCharTypePrompt("numeric");
-  includeSpecialChar = getCharTypePrompt("special characters");
+  while (true) {
+    alert(
+      "Next, you will be asked what character should your password be made from."
+    );
+    alert("NOTE> At least ONE of the following options MUST be selected");
+    includeLowerCase = getCharTypePrompt("lowercased");
+    includeUpperCase = getCharTypePrompt("uppercased");
+    includeNumeric = getCharTypePrompt("numeric");
+    includeSpecialChar = getCharTypePrompt("special characters");
+    if (
+      includeLowerCase ||
+      includeUpperCase ||
+      includeNumeric ||
+      includeSpecialChar
+    ) {
+      break;
+    }
+    alert("NOTE> You have not selected any characters to make your password.");
+  }
 }
 
 //Prompt user to select password length.
@@ -121,18 +53,20 @@ function getPasswordLength() {
   }
 }
 
-function getCharTypePrompt(CharType) {
+//Prompt user whether to include a suggested character type.
+//Takes one argument: character type string.
+function getCharTypePrompt(charType) {
   return confirm(
-    `Would you like to include ${CharType} chaacters in your password?`
+    `Would you like to include ${charType} characters in your password?`
   );
 }
 
 // Function for getting a random element from an array.
 // Takes two arguments: array and desired number of randomly selected elements.
 // Returns an array with randomly selected elements.
-function getRandom(charArr, numElem) {
+function getRandom(charArr, numOfElem) {
   let result = [];
-  while (result.length < numElem) {
+  while (result.length < numOfElem) {
     const randNum = Math.floor(Math.random() * charArr.length);
     const randElem = charArr[randNum];
     if (!result.includes(randElem)) {
@@ -143,7 +77,15 @@ function getRandom(charArr, numElem) {
 }
 
 // Function to generate password with user input
-function generatePassword() {}
+function generatePassword() {
+  let numOfLower
+
+  password = [];
+  if (includeLowerCase) {
+    let lowerChars = 
+    password.push()
+  }
+}
 
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
