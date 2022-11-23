@@ -1,9 +1,4 @@
-import {
-  specialCharacters,
-  numericCharacters,
-  lowerCasedCharacters,
-  upperCasedCharacters,
-} from "./data.js";
+import { special, numeric, lowerCased, upperCased } from "./data.js";
 
 let passwordOptions = {
   passwordLegth: 0,
@@ -19,17 +14,18 @@ function getPasswordOptions() {
   getPasswordLength();
   while (true) {
     alert(
-      "Next, you will be asked what types of characters should be used to make your password."
+      "Next, you will be asked what types of characters should be used to make your password.\n\n" +
+        "NOTE> At least ONE of the following options MUST be selected"
     );
-    alert("#NOTE#> At least ONE of the following options MUST be selected");
     getCharTypePrompt("lowerCased");
     getCharTypePrompt("upperCased");
     getCharTypePrompt("numeric");
     getCharTypePrompt("special");
     if (passwordOptions.numSelectedOptions > 0) {
+      generatePassword();
       break;
     }
-    alert("NOTE> You have not selected any characters to make your password.");
+    alert("You have not selected any characters to make your password.");
   }
 }
 
@@ -63,7 +59,7 @@ function getCharTypePrompt(charType) {
   }
 }
 
-// Function for getting a random element from an array.
+// Function for getting random elements from an array.
 // Takes two arguments: array and desired number of randomly selected elements.
 // Returns an array with randomly selected elements.
 function getRandom(charArr, numOfElem) {
@@ -78,14 +74,24 @@ function getRandom(charArr, numOfElem) {
 
 // Function to generate password with user input
 function generatePassword() {
+  getPasswordOptions();
   const quotient = Math.floor(
     passwordOptions.passwordLegth / passwordOptions.numSelectedOptions
   );
   const remainder =
     passwordOptions.passwordLegth % passwordOptions.numSelectedOptions;
+  const passwordOptionsArray = Object.keys(passwordOptions);
+  const selectedCharTypesArray = passwordOptionsArray.filter(
+    (prop) => passwordOptions[prop] === true
+  );
 
-
-  
+  let result = [];
+  for (let i = 0; i < selectedCharTypesArray.length; i++) {
+    i === 0
+      ? result.push(getRandom(selectedCharTypesArray[i], quotient + remainder))
+      : result.push(getRandom(selectedCharTypesArray[i], quotient));
+  }
+  return result;
 }
 
 // Get references to the #generate element
@@ -100,4 +106,4 @@ function writePassword() {
 }
 
 // Add event listener to generate button
-generateBtn.addEventListener("click", getPasswordOptions);
+generateBtn.addEventListener("click", writePassword);

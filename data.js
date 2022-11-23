@@ -1,5 +1,5 @@
 // Array of special characters to be included in password
-const specialCharacters = [
+const special = [
   "@",
   "%",
   "+",
@@ -26,10 +26,10 @@ const specialCharacters = [
 ];
 
 // Array of numeric characters to be included in password
-const numericCharacters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const numeric = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 // Array of lowercase characters to be included in password
-const lowerCasedCharacters = [
+const lowerCased = [
   "a",
   "b",
   "c",
@@ -59,7 +59,7 @@ const lowerCasedCharacters = [
 ];
 
 // Array of uppercase characters to be included in password
-const upperCasedCharacters = [
+const upperCased = [
   "A",
   "B",
   "C",
@@ -88,9 +88,4 @@ const upperCasedCharacters = [
   "Z",
 ];
 
-export {
-  specialCharacters,
-  numericCharacters,
-  lowerCasedCharacters,
-  upperCasedCharacters,
-};
+export { special, numeric, lowerCased, upperCased };
