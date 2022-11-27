@@ -5,10 +5,10 @@ This is a web application for a password generation.
 It prompts user with a series of options, including:
 * Password length
 * Character types
-** Lowercase
-** Uppercase
-** Numeric
-** S pecial characters
+* Lowercase character
+* Uppercase character
+* Numeric character
+* Special characters
       
 It then shows generated password in a box. 
 
