@@ -21,7 +21,7 @@ const charTypes = {
 let passwordOptions = {};
 
 /**
- * Initialize @passwordOptions properties and default values.
+ * Initialize @passwordOptions properties and default values, 
  */
 function initPasswordOptions() {
   passwordOptions.passwordLength = 0;
