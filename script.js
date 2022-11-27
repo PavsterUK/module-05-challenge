@@ -1,24 +1,35 @@
-import { special, numeric, lowerCased, upperCased } from "./data.js";
+import {
+  specialCharacters,
+  numericCharacters,
+  lowerCasedCharacters,
+  upperCasedCharacters,
+} from "./data.js";
 
-let data = {
-  special: special,
-  numeric: numeric,
-  lowerCased: lowerCased,
-  upperCased: upperCased,
+/**
+ * Object containing data (Character arrays).
+ */
+const charTypes = {
+  special: specialCharacters,
+  numeric: numericCharacters,
+  lowerCased: lowerCasedCharacters,
+  upperCased: upperCasedCharacters,
 };
 
+/**
+ * Object to store generated password options.
+ */
 let passwordOptions = {};
 
 /**
- * Create @passwordOptions object properties and default values.
+ * Initialize @passwordOptions properties and default values.
  */
 function initPasswordOptions() {
-  (passwordOptions.passwordLength = 0),
-    (passwordOptions.lowerCased = false),
-    (passwordOptions.upperCased = false),
-    (passwordOptions.numeric = false),
-    (passwordOptions.special = false),
-    (passwordOptions.numSelectedOptions = 0);
+  passwordOptions.passwordLength = 0;
+  passwordOptions.lowerCased = false;
+  passwordOptions.upperCased = false;
+  passwordOptions.numeric = false;
+  passwordOptions.special = false;
+  passwordOptions.numSelectedOptions = 0;
 }
 
 /**
@@ -30,13 +41,12 @@ function getPasswordOptions() {
   getPasswordLength();
   while (true) {
     alert(
-      "Next, you will be asked what types of characters should be used to make your password.\n\n" +
-        "At least ONE of the options MUST be selected."
+      "Please choose character types for your password.\n\n" +
+        "At least ONE of the following options MUST be selected."
     );
-    confirmCharType("lowerCased");
-    confirmCharType("upperCased");
-    confirmCharType("numeric");
-    confirmCharType("special");
+    for (const charType in charTypes) {
+      confirmCharType(charType);
+    }
     if (passwordOptions.numSelectedOptions > 0) break;
     else alert("You have not selected any character types.");
   }
@@ -49,24 +59,25 @@ function getPasswordOptions() {
 function getPasswordLength() {
   while (true) {
     const userInput = prompt(
-      "Please enter a desired password length between 10 and 64 (including)"
+      "Please enter a desired password length, between 10 and 64 (Inclusive)"
     );
     const numRegex = /^\d+$/; //Regex to check if string contains only numbers.
     if (
       numRegex.test(userInput) &&
       Number(userInput) >= 10 &&
       Number(userInput) <= 64
-    ) {
+    )
       return (passwordOptions.passwordLength = Number(userInput));
+    else {
+      alert("Selected number must be between 10 and 64 (Inclusive)");
     }
-    alert("Please make sure to enter a number between 10 and 64 (including)");
   }
 }
 
 /**
  * Confirm if user wants to include offered character type.
  * Collected data saved to @passwordOptions object.
- * @param {String} charType The character type.
+ * @param {String} charType The character type name.
  */
 function confirmCharType(charType) {
   const userChoise = confirm(
@@ -84,9 +95,8 @@ function confirmCharType(charType) {
  * @param {Number} num Desired number of randomly selected elements.
  * @return {String} Concatenated string of randomly selected characters.
  */
-function getRandom(charArr, numOfElem) {
+function getRandElemStr(charArr, numOfElem) {
   let result = "";
-
   while (result.length < numOfElem) {
     const randNum = Math.floor(Math.random() * charArr.length);
     const randElem = charArr[randNum];
@@ -99,12 +109,12 @@ function getRandom(charArr, numOfElem) {
  * Generate a password.
  * Each selected character type will get an equal
  * portion of password length, if password length cannot
- * be divided evenly, first selected character type will
- * loose one character to make up total password length.
+ * be divided evenly between number of options,
+ * first selected character type will get one character
+ * less than following character type(s).
  * @return {String} The password string.
  */
 function generatePassword() {
-  let password = "";
   getPasswordOptions();
   const quotient = Math.ceil(
     passwordOptions.passwordLength / passwordOptions.numSelectedOptions
@@ -113,12 +123,13 @@ function generatePassword() {
     quotient * passwordOptions.numSelectedOptions -
     passwordOptions.passwordLength;
 
+  let password = "";
   let optionNumber = 0;
   Object.keys(passwordOptions).filter((prop) => {
     if (passwordOptions[prop] === true) {
       optionNumber === 0
-        ? (password += getRandom(data[prop], quotient - remainder))
-        : (password += getRandom(data[prop], quotient));
+        ? (password += getRandElemStr(charTypes[prop], quotient - remainder))
+        : (password += getRandElemStr(charTypes[prop], quotient));
       optionNumber++;
     }
   });
@@ -126,16 +137,26 @@ function generatePassword() {
   return password;
 }
 
-// Get references to the #generate element
+/**
+ * Get references to the #generate element.
+ */
 var generateBtn = document.querySelector("#generate");
 
-// Write password to the #password input
+/**
+ * Write password to the #password input.
+ */
 function writePassword() {
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
-  passwordText.value = password;
+  //Shuffle password before rendering, just to make it look cooler.
+  passwordText.value = password
+    .split("")
+    .sort(() => 0.5 - Math.random())
+    .join("");
 }
 
-// Add event listener to generate button
+/**
+ * Add event listener to generate button.
+ */
 generateBtn.addEventListener("click", writePassword);
