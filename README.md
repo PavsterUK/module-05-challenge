@@ -4,7 +4,6 @@
 This is a web application for a password generation. 
 It prompts user with a series of options, including:
 * Password length
-* Character types
 * Lowercase character
 * Uppercase character
 * Numeric character
